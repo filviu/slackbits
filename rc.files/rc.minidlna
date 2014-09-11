@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# /etc/rc.d/rc.minidlna
+#
+# Start/stop/restart the minidlna uPNP server.
+#
+#
+
+MINIDLNA_BIN="/usr/sbin/minidlnad"
+ 
+minidlna_start() {
+  if [ -x $MINIDLNA_BIN ]; then
+    echo "Starting MiniDLNA..."
+    $MINIDLNA_BIN
+  fi
+}
+
+minidlna_stop() {
+  echo "Stopping MiniDLNA..."
+  killall minidlnad
+}
+
+minidlna_restart() {
+  minidlna_stop
+  sleep 2
+  minidlna_start
+}
+
+case "$1" in
+'start')
+  minidlna_start
+  ;;
+'stop')
+  minidlna_stop
+  ;;
+'restart')
+  minidlna_restart
+  ;;
+*)
+  # Default is "start", for backwards compatibility with previous
+  # Slackware versions.  This may change to a 'usage' error someday.
+  minidlna_start
+esac
+

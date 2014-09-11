@@ -1,0 +1,7 @@
+PRGNAM="KeePass"
+VERSION="2.27"
+HOMEPAGE="http://keepass.info/"
+MD5SUM_x86_64=""
+MAINTAINER="silviu vulcan"
+EMAIL="silviuvulcan.ro"
+APPROVED="Niels Horn"

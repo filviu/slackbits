@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# /etc/rc.d/rc.minidlna
+#
+# Start/stop/restart the minidlna uPNP server.
+#
+#
+USER="subsonic"
+PIDFILE="/var/run/subsonic.pid"
+PORT="4040"
+DIR="/opt/subsonic"
+SUBSONIC_BIN="sudo -u $USER /opt/subsonic/subsonic.sh --home=$DIR --pidfile=$PIDFILE --port=$PORT"
+
+subsonic_start() {
+  if [ -x $subsonic_BIN ]; then
+    echo "Starting subsonic..."
+    $SUBSONIC_BIN
+  fi
+}
+
+subsonic_stop() {
+  echo "Stopping subsonic..."
+  kill $(cat $PIDFILE)
+}
+
+subsonic_restart() {
+  subsonic_stop
+  sleep 2
+  subsonic_start
+}
+
+case "$1" in
+'start')
+  subsonic_start
+  ;;
+'stop')
+  subsonic_stop
+  ;;
+'restart')
+  subsonic_restart
+  ;;
+*)
+  # Default is "start", for backwards compatibility with previous
+  # Slackware versions.  This may change to a 'usage' error someday.
+  subsonic_start
+esac
