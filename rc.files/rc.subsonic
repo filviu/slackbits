@@ -6,7 +6,7 @@
 #
 #
 USER="subsonic"
-PIDFILE="/var/run/subsonic.pid"
+PIDFILE="/var/run/subsonic/subsonic.pid"
 PORT="4040"
 DIR="/opt/subsonic"
 SUBSONIC_BIN="sudo -u $USER /opt/subsonic/subsonic.sh --home=$DIR --pidfile=$PIDFILE --port=$PORT"
