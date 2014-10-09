@@ -12,14 +12,25 @@ CALIBRESERVER_BIN="/usr/bin/calibre-server --daemonize --pidfile=$PIDFILE --with
 
 calibre_start() {
   if [ -x $calibre_BIN ]; then
-    echo "Starting calibre-server..."
-    $CALIBRESERVER_BIN
+    if [ -f $PIDFILE ]; then
+        echo "calibre-server appears to be running with PID (`cat $PIDFILE`)"
+        echo "If it's stale please remove $PIDFILE and try again"
+    else
+	echo "Starting calibre-server..."
+	$CALIBRESERVER_BIN
+    fi
   fi
 }
 
 calibre_stop() {
-  echo "Stopping calibre..."
-  kill $(cat $PIDFILE)
+  if [ -f $PIDFILE ]; then
+     echo "Stopping calibre-server (`cat $PIDFILE`)..."
+     kill $(cat $PIDFILE)
+     rm $PIDFILE
+  else
+    echo "Couldn't find $PIDFILE, is calibre-server running?"
+  fi
+
 }
 
 calibre_restart() {
