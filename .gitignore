@@ -1,0 +1,6 @@
+# ignore slackbuild packages and sources
+*.xz
+*.t?z
+*.tar.gz
+*.tar.bz2
+*.zip
