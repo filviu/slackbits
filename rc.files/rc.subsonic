@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# /etc/rc.d/rc.minidlna
+# /etc/rc.d/rc.subsonic
 #
 # Start/stop/restart the minidlna uPNP server.
 #
@@ -10,16 +10,18 @@ PIDFILE="/var/run/subsonic/subsonic.pid"
 HTTP_PORT="4040"
 HTTPS_PORT="4043"
 DIR="/opt/subsonic"
-SUBSONIC_BIN="sudo -u $USER /opt/subsonic/subsonic.sh --home=$DIR --pidfile=$PIDFILE --port=$HTTP_PORT --https-port=$HTTPS_PORT"
+
+SUBSONIC_BIN="/opt/subsonic/subsonic.sh"
+SUBSONIC_OPTS="--home=$DIR --pidfile=$PIDFILE --port=$HTTP_PORT --https-port=$HTTPS_PORT"
 
 subsonic_start() {
-  if [ -x $subsonic_BIN ]; then
+  if [ -x $SUBSONIC_BIN ]; then
     if [ -f $PIDFILE ]; then
 	echo "Subsonic appears to be running with PID (`cat $PIDFILE`)"
 	echo "If it's stale please remove $PIDFILE and try again"
     else
 	echo "Starting subsonic..."
-	$SUBSONIC_BIN
+	sudo -u $USER $SUBSONIC_BIN $SUBSONIC_OPTS
     fi
   fi
 }
