@@ -1,0 +1,55 @@
+#!/bin/sh
+#
+# /etc/rc.d/rc.minidlna
+#
+# Start/stop/restart the minidlna uPNP server.
+#
+#
+PIDFILE="/var/run/apt-cacher-ng/pid"
+CONFDIR="/opt/apt-cacher-ng/conf/"
+ACNG_BIN="/opt/apt-cacher-ng/sbin/apt-cacher-ng"
+ACNG_OPTS=" -c $CONFDIR"
+
+acng_start() {
+  if [ -x $ACNG_BIN ]; then
+    if [ -f "$PIDFILE" ]; then
+	echo "apt-cacher-ng appears to be running with PID (`cat "$PIDFILE"`)"
+	echo "If it's stale please remove "$PIDFILE" and try again"
+    else
+	echo "Starting apt-cacher-ng..."
+	$ACNG_BIN $ACNG_OPTS
+    fi
+  fi
+}
+
+acng_stop() {
+  if [ -f "$PIDFILE" ]; then
+     echo "Stopping apt-cacher-ng (`cat "$PIDFILE"`)..."
+     kill $(cat "$PIDFILE")
+     rm "$PIDFILE"
+  else
+    echo "Couldn't find "$PIDFILE", is apt-cacher-ng running?"
+  fi
+}
+
+acng_restart() {
+  acng_stop
+  sleep 2
+  acng_start
+}
+
+case "$1" in
+'start')
+  acng_start
+  ;;
+'stop')
+  acng_stop
+  ;;
+'restart')
+  acng_restart
+  ;;
+*)
+  # Default is "start", for backwards compatibility with previous
+  # Slackware versions.  This may change to a 'usage' error someday.
+  acng_start
+esac
