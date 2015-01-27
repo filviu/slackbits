@@ -78,6 +78,7 @@ CXXFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
   --mandir=/usr/man \
+  --with-gtk2 \
   --enable-shared=yes \
   --disable-mp4 \
   --enable-static=no \
