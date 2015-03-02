@@ -4,3 +4,5 @@
 *.tar.gz
 *.tar.bz2
 *.zip
+*.deb
+*~
